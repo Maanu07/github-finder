@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import "./App.css";
+import Navbar from "./components/Navbar";
+import Home from "./components/pages/Home";
+import Alert from "./components/Alert";
+import About from "./components/pages/About";
+import User from "./components/pages/User";
+import GithubState from "./context/github/GithubState";
+import AlertState from "./context/alert/AlertState";
+import PageNotFound from "./components/pages/PageNotFound";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GithubState>
+      <AlertState>
+        <Router>
+          <div className='App'>
+            <Navbar />
+            <div className='container'>
+              <Alert />
+              <Switch>
+                <Route path='/' exact component={Home} />
+                <Route path='/about' exact component={About}></Route>
+                <Route path='/user/:login' exact component={User} />
+                <Route path='*'>{PageNotFound}</Route>
+              </Switch>
+            </div>
+          </div>
+        </Router>
+      </AlertState>
+    </GithubState>
   );
-}
+};
 
 export default App;
